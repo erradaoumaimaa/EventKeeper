@@ -79,6 +79,7 @@ public class Event {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", location='" + location + '\'' +
+                ", type='" + type + '\'' +
                 ", date=" + date +
                 '}';
     }

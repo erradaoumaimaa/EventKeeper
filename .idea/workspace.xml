@@ -5,16 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87883cb9-ab60-4b83-b800-fe2cdc85abff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interfaces/InterfaceEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Registration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/EventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interfaces/InterfaceParticipant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/service/Menu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Event.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Participant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Participant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Registration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Event.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
