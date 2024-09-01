@@ -1,6 +1,7 @@
 package service;
 
 import model.Event;
+import model.Participant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -8,11 +9,12 @@ import java.util.Scanner;
 public class Menu {
 
     private EventService eventService;
-
-    public Menu(EventService eventService) {
+    private ParticipantService participantService;
+    public Menu(EventService eventService ,ParticipantService participantService) {
         this.eventService = eventService;
+        this.participantService=participantService;
     }
-
+    private Menu(){}
     public void displayMenu() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choisir votre rôle:");
@@ -77,16 +79,16 @@ public class Menu {
                     searchEventsByType();
                     break;
                 case 7:
-                    // Afficher tous les participants
+                    getAllParticipant();
                     break;
                 case 8:
-                    // Ajouter un participant
+                    addParticipant();
                     break;
                 case 9:
-                    // Modifier un participant
+                    updateParticipant();
                     break;
                 case 10:
-                    // Supprimer un participant
+                    deleteParticipant();
                     break;
                 case 0:
                     continueManaging = false; // Quitter le menu admin
@@ -219,6 +221,95 @@ public class Menu {
             System.out.println(event);
         }
     }
+
+    private void addParticipant() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Combien de participants souhaitez-vous ajouter ? ");
+        int numberOfParticipants = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numberOfParticipants; i++) {
+            System.out.println("Veuillez saisir les informations pour le participant " + (i + 1) + ":");
+
+            System.out.print("Nom : ");
+            String name = scanner.nextLine();
+
+            System.out.print("Numéro de téléphone : ");
+            String phone = scanner.nextLine();
+
+            // Création d'un nouvel objet Participant avec un ID temporaire
+            Participant participant = new Participant(0, name, phone);
+
+            // Ajout du participant via ParticipantService
+            participantService.addParticipant(participant);
+            System.out.println("Participant ajouté !\n");
+        }
+
+        // Affichage de tous les participants après ajout
+        getAllParticipant();
+    }
+
+    private void getAllParticipant() {
+        List<Participant> participants = participantService.getAllParticipant();
+
+        if (participants.isEmpty()) {
+            System.out.println("Aucun participant enregistré.");
+        } else {
+            System.out.println("Liste des participants :");
+            for (Participant participant : participants) {
+                System.out.println(participant);
+            }
+        }
+    }
+
+
+    private void updateParticipant() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Entrez l'ID du participant à modifier : ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        // Saisie des nouvelles informations pour le participant
+        System.out.print("Nouveau nom : ");
+        String newName = scanner.nextLine();
+
+        System.out.print("Nouveau numéro de téléphone : ");
+        String newPhone = scanner.nextLine();
+
+        // Création d'un objet Participant avec les nouvelles informations
+        Participant updatedParticipant = new Participant(id, newName, newPhone);
+
+        // Mise à jour du participant via ParticipantService
+        Participant result = participantService.updateParticipant(updatedParticipant);
+
+        if (result != null) {
+            System.out.println("Participant mis à jour avec succès !");
+        } else {
+            System.out.println("Aucun participant trouvé avec l'ID spécifié.");
+        }
+        getAllParticipant();
+    }
+
+
+    private void deleteParticipant() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Entrez l'ID du participant à supprimer : ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        // Création d'un objet Participant avec l'ID à supprimer
+        Participant participantToDelete = new Participant(id);
+        // Suppression du participant via ParticipantService
+        Participant result = participantService.deleteParticipant(participantToDelete);
+        if (result != null) {
+            System.out.println("Participant supprimé avec succès !");
+        } else {
+            System.out.println("Aucun participant trouvé avec l'ID spécifié.");
+        }
+        getAllParticipant();
+    }
+
 
     private void displayUserMenu() {
     }
