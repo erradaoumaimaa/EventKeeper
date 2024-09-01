@@ -1,3 +1,5 @@
+package model;
+
 import java.time.LocalDate;
 
 public class Event {
@@ -7,17 +9,21 @@ public class Event {
     private String title;
     private String description;
     private String location;
+    private String type;
     private LocalDate date;
 
     // Constructeur
-    public Event(int id, String title, String description, String location, LocalDate date) {
+    public Event(int id, String title, String description, String location, String type ,LocalDate date) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.location = location;
+        this.type= type;
         this.date = date;
     }
-
+    public Event(int id) {
+        this.id = id;
+    }
     // Getters et setters
     public int getId() {
         return id;
@@ -50,7 +56,13 @@ public class Event {
     public void setLocation(String location) {
         this.location = location;
     }
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
     public LocalDate getDate() {
         return date;
     }
