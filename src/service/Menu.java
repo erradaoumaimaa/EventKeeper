@@ -2,17 +2,22 @@ package service;
 
 import model.Event;
 import model.Participant;
+import model.Registration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-
     private EventService eventService;
     private ParticipantService participantService;
-    public Menu(EventService eventService ,ParticipantService participantService) {
+    private RegistrationService registrationService;
+    private Scanner scanner;
+
+    public Menu(EventService eventService ,ParticipantService participantService ,RegistrationService registrationService) {
         this.eventService = eventService;
         this.participantService=participantService;
+        this.registrationService=registrationService;
+        this.scanner = new Scanner(System.in);
     }
     private Menu(){}
     public void displayMenu() {
@@ -311,6 +316,142 @@ public class Menu {
     }
 
 
-    private void displayUserMenu() {
+    public void displayUserMenu() {
+        int choix;
+        do {
+            System.out.println("\n--- Menu Utilisateur ---");
+            System.out.println("1. S'inscrire à un événement");
+            System.out.println("2. Se désinscrire d'un événement");
+            System.out.println("3. Voir mes inscriptions");
+            System.out.println("4. Afficher les inscriptions d'un événement");
+            System.out.println("5. Quitter");
+            System.out.print("Entrez votre choix : ");
+            choix = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choix) {
+                case 1:
+                    registerForEvent();
+                    break;
+                case 2:
+                    unregisterFromEvent();
+                    break;
+                case 3:
+                    viewMyRegistrations();
+                    break;
+                case 4:
+                    viewMyEventRegistrations();
+                    break;
+                case 5:
+                    System.out.println("Fermeture du menu...");
+                    break;
+                default:
+                    System.out.println("Choix invalide. Veuillez réessayer.");
+            }
+        } while (choix != 5);
     }
+    private void registerForEvent() {
+        System.out.print("Enter your Participant ID: ");
+        int participantId = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+
+        Participant participant = participantService.getParticipantById(participantId);
+        if (participant == null) {
+            System.out.println("Participant not found.");
+            return;
+        }
+
+        System.out.print("Enter Event ID to register: ");
+        int eventId = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+
+        Event event = eventService.getEventById(eventId);
+        if (event == null) {
+            System.out.println("Event not found.");
+            return;
+        }
+
+        Registration registration = registrationService.addRegistration(event, participant);
+        System.out.println("Registration successful: " + registration);
+    }
+
+    private void unregisterFromEvent() {
+        System.out.print("Enter your Participant ID: ");
+        int participantId = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+
+        Participant participant = participantService.getParticipantById(participantId);
+        if (participant == null) {
+            System.out.println("Participant not found.");
+            return;
+        }
+
+        System.out.print("Enter Event ID to unregister: ");
+        int eventId = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+
+        Event event = eventService.getEventById(eventId);
+        if (event == null) {
+            System.out.println("Event not found.");
+            return;
+        }
+
+        List<Registration> registrations = registrationService.getRegistrationsByEvent(event);
+        Registration toRemove = registrations.stream()
+                .filter(reg -> reg.getParticipant().getId() == participantId)
+                .findFirst()
+                .orElse(null);
+
+        if (toRemove != null) {
+            registrationService.removeRegistration(toRemove.getId());
+            System.out.println("Unregistered successfully.");
+        } else {
+            System.out.println("You are not registered for this event.");
+        }
+    }
+
+    private void viewMyRegistrations() {
+        System.out.print("Enter your Participant ID: ");
+        int participantId = scanner.nextInt();
+        scanner.nextLine();
+
+        Participant participant = participantService.getParticipantById(participantId);
+        if (participant == null) {
+            System.out.println("Participant not found.");
+            return;
+        }
+
+        List<Event> events = registrationService.getEventsByParticipant(participant);
+        if (events.isEmpty()) {
+            System.out.println("You have no event registrations.");
+        } else {
+            System.out.println("You are registered for the following events:");
+            events.forEach(event -> System.out.println("- " + event.getTitle()));
+        }
+    }
+
+
+    private void viewMyEventRegistrations() {
+        System.out.print("Entrez l'ID de l'événement pour afficher les inscriptions : ");
+        int eventId = scanner.nextInt();
+        scanner.nextLine(); // Consomme la nouvelle ligne
+
+        Event event = eventService.getEventById(eventId);
+
+        if (event != null) {
+            List<Registration> registrations = registrationService.getRegistrationsByEvent(event);
+            if (registrations.isEmpty()) {
+                System.out.println("Aucune inscription trouvée pour cet événement.");
+            } else {
+                System.out.println("Inscriptions pour l'événement : " + event.getTitle());
+                for (Registration registration : registrations) {
+                    System.out.println("Participant : " + registration.getParticipant().getName());
+                }
+            }
+        } else {
+            System.out.println("Événement non trouvé.");
+        }
+    }
+
+
 }

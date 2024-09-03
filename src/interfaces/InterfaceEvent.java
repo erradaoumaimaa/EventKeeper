@@ -22,4 +22,5 @@ public interface InterfaceEvent {
    List<Event> searchEventsByLocation(String location);
 
    List<Event> searchEventsByType(String type);
+
 }

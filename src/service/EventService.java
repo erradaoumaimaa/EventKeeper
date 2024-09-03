@@ -28,7 +28,14 @@ public class EventService implements InterfaceEvent{
     public List<Event> getEvents() {
         return events;
     }
-
+    public Event getEventById(int id) {
+        for (Event event : events) {
+            if (event.getId() == id) {
+                return event;
+            }
+        }
+        return null;
+    }
     @Override
     public Event updateEvent(Event newEvent) {
 

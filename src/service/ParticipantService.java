@@ -46,4 +46,13 @@ public class ParticipantService implements InterfaceParticipant {
         return null;
     }
 
+    public Participant getParticipantById(int id) {
+        for (Participant participant : participants) {
+            if (participant.getId() == id) {
+                return participant;
+            }
+        }
+        return null;
+    }
+
 }

@@ -3,6 +3,8 @@ import model.Participant;
 import service.Menu;
 import service.EventService;
 import service.ParticipantService;
+import service.RegistrationService;
+
 import java.util.*;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -12,7 +14,9 @@ public class Main {
 
         EventService eventService = new EventService();
         ParticipantService participantService = new ParticipantService();
-        Menu menu = new Menu(eventService , participantService );
+        RegistrationService registrationService = new RegistrationService();
+
+        Menu menu = new Menu(eventService , participantService , registrationService );
         menu.displayMenu();
         }
     }
