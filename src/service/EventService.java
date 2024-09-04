@@ -3,17 +3,25 @@ package service;
 import model.Event;
 import interfaces.InterfaceEvent;
 
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
+
 public class EventService implements InterfaceEvent{
 
     private List<Event> events = new LinkedList<>();
+    private RegistrationService registrationService;
+
     private int nextId = 1;
 
+    // Constructeur avec RegistrationService injecté
+    public EventService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
     //Methode pour l'ajout des evenement :
     @Override
     public Event addEvent(Event event) {
@@ -80,6 +88,21 @@ public class EventService implements InterfaceEvent{
     @Override
     public List<Event> searchEventsByType(String type) {
         return events.stream().filter(event -> event.getType().equals(type)).collect(Collectors.toList());
+    }
+
+    // affichage chaque event avec le nombre de participant dans l'évement :
+    public String generateEventReport() {
+        StringBuilder report = new StringBuilder();
+        report.append("Rapport des événements:\n");
+
+        for (Event event : events) { // events est la liste de tous les événements
+            long count = registrationService.getRegistrationsByEvent(event).size();
+            report.append("Événement: ").append(event.getTitle())
+                    .append(", Nombre de participants: ").append(count)
+                    .append("\n");
+        }
+
+        return report.toString();
     }
 
 

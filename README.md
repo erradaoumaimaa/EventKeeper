@@ -27,20 +27,21 @@ The system allows an organization to manage various events, such as conferences,
 ```plaintext
 .
 ├── src
-│   ├── main
-│   │   ├── java
-│   │   │   ├── model
-│   │   │   │   ├── Event.java
-│   │   │   │   ├── Participant.java
-│   │   │   │   └── Registration.java
-│   │   │   ├── service
-│   │   │   │   ├── EventService.java
-│   │   │   │   ├── ParticipantService.java
-│   │   │   │   └── RegistrationService.java
-│   │   │   ├── interfaces
-│   │   │   │   ├── InterfaceEvent.java
-│   │   │   │   ├── InterfaceParticipant.java
-│   │   │   │   └── InterfaceRegistration.java
-├── │   │   │   ├── Menu.java
-│   │   │   └── Main.java
+│   ├── model
+│   │   ├── Event.java
+│   │   ├── Participant.java
+│   │   └── Registration.java
+│   ├── service
+│   │   ├── EventService.java
+│   │   ├── ParticipantService.java
+│   │   └── RegistrationService.java
+│   │   ├── Menu.java
+│   │   ├── InterfaceEvent.java
+│   │   ├── InterfaceParticipant.java
+│   │   └── InterfaceRegistration.java
+│   ├── interfaces
+│   │   ├── InterfaceEvent.java
+│   │   ├── InterfaceParticipant.java
+│   │   └── InterfaceRegistration.java
+│   └── Main.java
 ├── README.md

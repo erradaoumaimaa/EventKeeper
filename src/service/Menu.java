@@ -18,6 +18,7 @@ public class Menu {
         this.participantService=participantService;
         this.registrationService=registrationService;
         this.scanner = new Scanner(System.in);
+        this.eventService = new EventService(registrationService);
     }
     private Menu(){}
     public void displayMenu() {
@@ -59,6 +60,8 @@ public class Menu {
             System.out.println("8. Ajouter un participant");
             System.out.println("9. Modifier un participant");
             System.out.println("10. Supprimer un participant");
+            System.out.println("************* Statistique d'un evenement ***************");
+            System.out.println("11. Afficher les statistiques");
             System.out.println("0. Quitter");
             System.out.print("Votre choix : ");
             int adminChoice = scanner.nextInt();
@@ -94,6 +97,9 @@ public class Menu {
                     break;
                 case 10:
                     deleteParticipant();
+                    break;
+                case 11:
+                    generateReport();
                     break;
                 case 0:
                     continueManaging = false; // Quitter le menu admin
@@ -315,6 +321,10 @@ public class Menu {
         getAllParticipant();
     }
 
+    private void generateReport() {
+        String report = eventService.generateEventReport();
+        System.out.println(report);
+    }
 
     public void displayUserMenu() {
         int choix;
@@ -344,6 +354,7 @@ public class Menu {
                     break;
                 case 5:
                     System.out.println("Fermeture du menu...");
+                    displayMenu();
                     break;
                 default:
                     System.out.println("Choix invalide. Veuillez réessayer.");
