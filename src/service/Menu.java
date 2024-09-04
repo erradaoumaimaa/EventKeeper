@@ -11,6 +11,8 @@ public class Menu {
     private EventService eventService;
     private ParticipantService participantService;
     private RegistrationService registrationService;
+    private InputValidator inputValidator;
+
     private Scanner scanner;
 
     public Menu(EventService eventService ,ParticipantService participantService ,RegistrationService registrationService) {
@@ -19,6 +21,7 @@ public class Menu {
         this.registrationService=registrationService;
         this.scanner = new Scanner(System.in);
         this.eventService = new EventService(registrationService);
+        this.inputValidator = new InputValidator();
     }
     private Menu(){}
     public void displayMenu() {
@@ -115,31 +118,18 @@ public class Menu {
     }
 
     private void addEvent() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Combien d'événements souhaitez-vous ajouter ? ");
-        int numberOfEvents = scanner.nextInt();
-        scanner.nextLine();
+        int numberOfEvents = inputValidator.getIntInput("Combien d'événements souhaitez-vous ajouter ? ");
 
         for (int i = 0; i < numberOfEvents; i++) {
             System.out.println("Veuillez saisir les informations pour l'événement " + (i + 1) + ":");
 
-            System.out.print("Titre : ");
-            String title = scanner.nextLine();
-
-            System.out.print("Description : ");
-            String description = scanner.nextLine();
-
-            System.out.print("Lieu : ");
-            String location = scanner.nextLine();
-
-            System.out.print("Type : ");
-            String type = scanner.nextLine();
-
-            System.out.print("Date (format YYYY-MM-DD) : ");
-            LocalDate date = LocalDate.parse(scanner.nextLine());
+            String title = inputValidator.getStringInput("Titre : ");
+            String description = inputValidator.getStringInput("Description : ");
+            String location = inputValidator.getStringInput("Lieu : ");
+            String type = inputValidator.getStringInput("Type : ");
+            LocalDate date = inputValidator.getDateInput("Date (format YYYY-MM-DD) : ");
 
             Event event = new Event(0, title, description, location, type, date);
-
             eventService.addEvent(event);
             System.out.println("Événement ajouté !\n");
         }
@@ -148,27 +138,12 @@ public class Menu {
     }
 
     private void updateEvent() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Modification d'un événement :");
-        System.out.print("ID de l'événement à modifier : ");
-        int idToUpdate = scanner.nextInt();
-        scanner.nextLine(); // Consommer la nouvelle ligne
-
-        System.out.print("Nouveau titre : ");
-        String newTitle = scanner.nextLine();
-
-        System.out.print("Nouvelle description : ");
-        String newDescription = scanner.nextLine();
-
-        System.out.print("Nouveau lieu : ");
-        String newLocation = scanner.nextLine();
-
-        System.out.print("Nouveau type : ");
-        String newType = scanner.nextLine();
-
-        System.out.print("Nouvelle date (format YYYY-MM-DD) : ");
-        LocalDate newDate = LocalDate.parse(scanner.nextLine());
+        int idToUpdate = inputValidator.getIntInput("ID de l'événement à modifier : ");
+        String newTitle = inputValidator.getStringInput("Nouveau titre : ");
+        String newDescription = inputValidator.getStringInput("Nouvelle description : ");
+        String newLocation = inputValidator.getStringInput("Nouveau lieu : ");
+        String newType = inputValidator.getStringInput("Nouveau type : ");
+        LocalDate newDate = inputValidator.getDateInput("Nouvelle date (format YYYY-MM-DD) : ");
 
         Event updatedEvent = new Event(idToUpdate, newTitle, newDescription, newLocation, newType, newDate);
         Event updatedResult = eventService.updateEvent(updatedEvent);
@@ -181,6 +156,7 @@ public class Menu {
 
         displayAllEvents();
     }
+
 
     private void deleteEvent() {
         Scanner scanner = new Scanner(System.in);
